@@ -10,7 +10,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), android.widget.SearchView.OnQueryTextListener {
+
 
 
     var viewModel: MainViewModel? = null
@@ -31,5 +32,17 @@ class MainActivity : AppCompatActivity() {
             adapter.movies = it
             adapter.notifyDataSetChanged()
         })
+
+        searchView.setOnQueryTextListener(this)
+        searchView.setQuery("Lord", true)
+    }
+
+
+    // can be refractored
+    override fun onQueryTextSubmit(p0: String?): Boolean = true
+
+    override fun onQueryTextChange(p0: String?): Boolean {
+        viewModel?.fetchMovies(p0 !!)
+        return true
     }
 }
